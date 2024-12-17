@@ -10,4 +10,5 @@ spring:
     password: hiep2004
 
 jwt:
-  signerKey: "8b7Kj08a904AApjPRSPvfzFAANA8eXiof4r+5pP/BW/mMsb6y+lCN3x50XUZ6JRo"
+    signerKey: "EP0lpQrdwgRvj7bxN1/C8x1fuZEmNkNpXyNIwm/Z04r81LEhPJSpXREYFYp0R7Pr
+"
