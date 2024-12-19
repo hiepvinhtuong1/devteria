@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -52,12 +54,18 @@ public class UserController {
         return apiResponse;
     }
 
+
     @GetMapping("/{userId}")
     ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId){
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
         apiResponse.setMessage("Successfully retrieved user");
         apiResponse.setData(userService.getUserById(userId));
         return apiResponse;
+    }
+
+    @GetMapping("/myinfo")
+    ApiResponse<UserResponse> getMyInfo() {
+        return ApiResponse.<UserResponse>builder().data(userService.getMyInfo()).build();
     }
 
     @PutMapping("/{userId}")
