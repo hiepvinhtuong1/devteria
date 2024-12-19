@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +38,14 @@ public class UserController {
 
     @GetMapping()
     ApiResponse<List<UserResponse>> getAllUsers() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        log.info("username: {}", authentication.getName());
+        for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
+            log.info("grantedAuthority: {}", grantedAuthority.getAuthority());
+        }
+      //  authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
+
         ApiResponse<List<UserResponse>> apiResponse = new ApiResponse<>();
         apiResponse.setMessage("Successfully retrieved users");
         apiResponse.setData(userService.getAllUsers());
