@@ -12,6 +12,7 @@ import com.devteria.identity_service.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +29,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class UserService {
 
     UserRepository userRepository;
@@ -48,7 +50,7 @@ public class UserService {
         HashSet<String> roles = new HashSet<>();
         roles.add(Role.USER.name());
 
-        user.setRoles(roles);
+        //user.setRoles(roles);
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
@@ -65,6 +67,13 @@ public class UserService {
         User user = userRepository.findByUsername(authentication.getName()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
 
         return userMapper.toUserResponse(user);
+    }
+
+    @PostAuthorize("returnObject.username == authentication.name")
+    public UserResponse getUser(String id){
+        log.info("In method get user by Id");
+        return userMapper.toUserResponse(userRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS)));
     }
 
     public UserResponse getUserById(String id) {
