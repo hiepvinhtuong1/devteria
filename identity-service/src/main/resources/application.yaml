@@ -8,6 +8,10 @@ spring:
     url: "jdbc:mysql://localhost:3306/identity_service"
     username: root
     password: hiep2004
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
 jwt:
     signerKey: "EP0lpQrdwgRvj7bxN1/C8x1fuZEmNkNpXyNIwm/Z04r81LEhPJSpXREYFYp0R7Pr

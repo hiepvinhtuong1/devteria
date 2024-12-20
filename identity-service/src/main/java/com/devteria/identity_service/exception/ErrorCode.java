@@ -1,27 +1,25 @@
 package com.devteria.identity_service.exception;
 
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+
+@Getter
 public enum ErrorCode {
-    USER_EXISTS(1001,"User is already existed"),
-    USER_NOT_EXISTS(1002,"User is not existed"),
-    USERNAME_INVALID(1003,"Username must be at least 8 characters"),
-    PASSWORD_INVALID(1004,"Password must have at least 8 characters"),
-    AUTHENTICATION_FAILED(1005,"Authentication failed"),
+    UNCATEGORIZED_EXCEPTION(9999, "Uncategorized error", HttpStatus.BAD_REQUEST),
+    USER_EXISTS(1001,"User is already existed", HttpStatus.BAD_REQUEST ),
+    USER_NOT_EXISTS(1002,"User is not existed", HttpStatus.NOT_FOUND),
+    USERNAME_INVALID(1003,"Username must be at least 8 characters", HttpStatus.BAD_REQUEST),
+    PASSWORD_INVALID(1004,"Password must have at least 8 characters", HttpStatus.BAD_REQUEST),
+    UNAUTHENTICATED(1005,"Authentication failed", HttpStatus.UNAUTHORIZED),
+    UNAUTHORIZED(1006,"You do not have permisson", HttpStatus.FORBIDDEN),
     ;
 
     final private int code;
     final private  String message;
-
-    ErrorCode(int code, String message) {
+    final private HttpStatus status;
+    ErrorCode(int code, String message, HttpStatus status) {
         this.code = code;
         this.message = message;
-
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public int getCode() {
-        return code;
+        this.status = status;
     }
 }

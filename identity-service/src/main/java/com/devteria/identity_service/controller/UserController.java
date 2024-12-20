@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.logging.Level;
 
-@RestController
-@RequestMapping("/users")
-@RequiredArgsConstructor(onConstructor_ = {@Autowired})
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@Slf4j
+    @RestController
+    @RequestMapping("/users")
+    @RequiredArgsConstructor(onConstructor_ = {@Autowired})
+    @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+    @Slf4j
 public class UserController {
 
     private UserService userService;
