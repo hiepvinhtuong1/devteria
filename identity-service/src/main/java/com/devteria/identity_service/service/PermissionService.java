@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class PermissionService {
 
     PermissionMapper permissionMapper;
 
+    @PreAuthorize("hasRole('ADMIN')")
     public PermissionResponse create(PermissionRequest request) {
         var permission = permissionMapper.toPermission(request);
 
@@ -32,11 +34,13 @@ public class PermissionService {
         return permissionMapper.toPermissionReponse(permission);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public List<PermissionResponse> getAll() {
         var permissions = permissionRepository.findAll();
         return permissions.stream().map(permissionMapper::toPermissionReponse).toList();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(String permission) {
         permissionRepository.deleteById(permission);
     }

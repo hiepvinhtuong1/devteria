@@ -23,4 +23,6 @@ public class UserCreationRequest {
     String firstName;
     String lastName;
     LocalDate dob;
+
+
 }
