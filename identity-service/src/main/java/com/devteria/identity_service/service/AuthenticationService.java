@@ -42,19 +42,26 @@ public class AuthenticationService {
     @Value("${jwt.signerKey}")
     protected String SIGNER_KEY;
 
+    // Phương thức introspect: Kiểm tra tính hợp lệ của JWT token dựa trên chữ ký và thời gian hết hạn.
     public IntrospectResponse introspect(IntrospectRequest request) throws JOSEException, ParseException {
+        // Lấy token từ yêu cầu introspect
         var token = request.getToken();
 
+        // Tạo đối tượng JWSVerifier để xác minh chữ ký của token với SIGNER_KEY
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY);
 
+        // Phân tích cú pháp token (chuỗi JWT) thành đối tượng SignedJWT để xử lý
         SignedJWT signedJWT = SignedJWT.parse(token);
 
+        // Lấy thời gian hết hạn (expiration time) từ phần claims của JWT
         Date expityTime = signedJWT.getJWTClaimsSet().getExpirationTime();
 
+        // Xác minh chữ ký của token bằng key đã cung cấp
         var verified = signedJWT.verify(verifier);
 
+        // Trả về kết quả: Token hợp lệ nếu cả chữ ký được xác minh và thời gian chưa hết hạn
         return IntrospectResponse.builder()
-                .valid(verified && expityTime.after(new Date()))
+                .valid(verified && expityTime.after(new Date())) // valid = true nếu token hợp lệ
                 .build();
     }
 
